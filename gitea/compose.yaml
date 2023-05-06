@@ -1,0 +1,56 @@
+services:
+  gitea:
+    image: gitea/gitea:1.19.3
+    container_name: gitea
+    depends_on:
+      - database
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - GITEA__security__SECRET_KEY=${GITEA_SECRET_KEY:?GITEA_SECRET_KEY not set}      
+      - GITEA__security__INTERNAL_TOKEN=${GITEA_INTERNAL_TOKEN:?GITEA_INTERNAL_TOKEN not set}     
+      - GITEA__server__LFS_JWT_SECRET=${GITEA_LFS_JWT_SECRET:?GITEA_LFS_JWT_SECRET not set}     
+    restart: unless-stopped
+    volumes:
+      - ./gitea-p:/data
+      - type: bind
+        source: ./conf/app.ini
+        target: /data/gitea/conf/app.ini
+      - ./conf/public:/data/gitea/public
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      traefik.enable: true
+      traefik.http.routers.git.tls: true
+      traefik.http.routers.git.tls.certResolver: letsencrypt
+      traefik.http.routers.git.tls.domains[0].main: git.amy.access.ly
+      traefik.http.routers.git.entrypoints: websecure
+      traefik.http.routers.git.rule: Host(`git.amy.access.ly`)
+      traefik.http.services.git.loadbalancer.server.port: 3000
+
+      traefik.tcp.routers.gitea-ssh.rule: HostSNI(`*`)
+      traefik.tcp.routers.gitea-ssh.entrypoints: ssh
+      traefik.tcp.routers.gitea-ssh.service: gitea-ssh-svc
+      traefik.tcp.services.gitea-ssh-svc.loadbalancer.server.port: 2202
+    networks:
+      - traefik
+      - database-gitea
+  database:
+    image: postgres:14-alpine
+    container_name: database-gitea
+    restart: unless-stopped
+    environment:
+      - "POSTGRES_DB=gitea"
+      - "POSTGRES_USER=gitea"
+      - "POSTGRES_PASSWORD=gitea"
+    volumes:
+      - ./postgres-p/db/:/var/lib/postgresql/data/
+    networks:
+      - database-gitea
+    expose:
+        - 5432
+networks:
+  database-gitea:
+    name: database-gitea
+  traefik:
+    external: true

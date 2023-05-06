@@ -1,0 +1,29 @@
+services:
+  pgadmin:
+    image: dpage/pgadmin4:7.1
+    container_name: pgadmin
+    restart: unless-stopped
+    env_file:
+      - ./conf/.env
+    volumes:
+      - ./pgadmin-p:/var/lib/pgadmin
+    networks:
+      - database-gitea
+      - database-hastebin
+      - traefik
+    labels:
+      traefik.enable: true
+      traefik.http.routers.pgadmin.rule: Host(`pgadmin.amy.access.ly`)
+      traefik.http.routers.pgadmin.tls.domains[0].main: pgadmin.amy.access.ly
+      traefik.http.routers.pgadmin.tls.certResolver: letsencrypt
+      traefik.http.routers.pgadmin.entrypoints: websecure
+      traefik.http.services.pgadmin.loadbalancer.server.port: 80
+networks:
+  database-gitea:
+    external: true
+  database-hastebin:
+    external: true
+  database-nextcloud:
+    external: true
+  traefik:
+    external: true

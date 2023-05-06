@@ -1,0 +1,38 @@
+services:
+  hastebin:
+    image: topisenpai/haste-server:latest
+    container_name: hastebin
+    restart: unless-stopped
+    env_file:
+      - ./conf/.env
+    depends_on:
+      - database
+    networks:
+      - traefik
+      - database-hastebin
+    labels:
+      traefik.enable: true
+      traefik.http.routers.hastebin.rule: Host(`bin.amy.access.ly`)
+      traefik.http.routers.hastebin.tls.certResolver: letsencrypt
+      traefik.http.routers.hastebin.tls.domains[0].main: bin.amy.access.ly
+      traefik.http.routers.hastebin.entrypoints: websecure
+      traefik.http.services.hastebin.loadbalancer.server.port: 7777
+  database:
+    image: postgres:14-alpine
+    container_name: database-hastebin
+    restart: unless-stopped
+    environment:
+      - "POSTGRES_DB=hastebin"
+      - "POSTGRES_USER=hastebin"
+      - "POSTGRES_PASSWORD=hastebin"
+    volumes:
+      - ./postgres-p/db/:/var/lib/postgresql/data/
+    networks:
+      - database-hastebin
+    expose:
+        - 5432
+networks:
+  database-hastebin:
+    name: database-hastebin
+  traefik:
+    external: true

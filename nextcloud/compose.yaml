@@ -1,0 +1,39 @@
+services:
+  nextcloud:
+    image: nextcloud:26.0-apache
+    container_name: nextcloud
+    restart: unless-stopped
+    env_file:
+      - ./conf/.env
+    volumes:
+      - ./nextcloud-p:/var/www/html
+      - /mnt/blk:/var/www/data/share
+    networks:
+      - database-nextcloud
+      - traefik
+    labels:
+      traefik.enable: true
+      traefik.http.routers.cloud.rule: Host(`cloud.amy.access.ly`)
+      traefik.http.routers.cloud.tls.domains[0].main: cloud.amy.access.ly
+      traefik.http.routers.cloud.tls.certResolver: letsencrypt
+      traefik.http.routers.cloud.entrypoints: websecure
+      traefik.http.services.cloud.loadbalancer.server.port: 80
+  database:
+    image: postgres:14-alpine
+    container_name: database-nextcloud
+    restart: unless-stopped
+    environment:
+      - "POSTGRES_DB=nextcloud"
+      - "POSTGRES_USER=nextcloud"
+      - "POSTGRES_PASSWORD=nextcloud"
+    volumes:
+      - ./postgres-p/db/:/var/lib/postgresql/data/
+    networks:
+      - database-nextcloud
+    expose:
+        - 5432
+networks:
+  database-nextcloud:
+    name: database-nextcloud
+  traefik:
+    external: true
