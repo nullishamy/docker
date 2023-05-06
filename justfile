@@ -35,11 +35,14 @@ down:
 
 	set -e 
 	s traefik down
+	s pgadmin down
 	s web down
 	s gitea down
 	s hastebin down
 	s nextcloud down
-	s pgadmin down
+
+# Restart all services
+restart: down up
 
 # Setup the dockerfiles for the first time
 setup:
@@ -52,7 +55,8 @@ setup:
 	docker compose -f hastebin/compose.yaml up database-hastebin
 	./hastebin/init-schema.sh
 
-	echo "You should setup Gitea's secret (see gitea/conf/.env.example)"
+	echo "You should setup Gitea's secrets (see gitea/.env.example)"
+	echo "You should move Gitea's app.ini file (see gitea/conf/app.ini.example)"
 	echo "You should verify there is a mount point at /mnt/blk for Nextcloud (see nextcloud/compose.yaml)"
 
 # Display all logs
