@@ -30,8 +30,7 @@ services:
       - ./postgres-p/db/:/var/lib/postgresql/data/
     networks:
       - database-nextcloud
-    expose:
-        - 5432
+
 networks:
   database-nextcloud:
     name: database-nextcloud

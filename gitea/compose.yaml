@@ -47,8 +47,7 @@ services:
       - ./postgres-p/db/:/var/lib/postgresql/data/
     networks:
       - database-gitea
-    expose:
-        - 5432
+
 networks:
   database-gitea:
     name: database-gitea
