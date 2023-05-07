@@ -10,6 +10,7 @@ services:
     networks:
       - database-gitea
       - database-hastebin
+      - database-nextcloud
       - traefik
     labels:
       traefik.enable: true
