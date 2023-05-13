@@ -23,9 +23,9 @@ services:
       traefik.enable: true
       traefik.http.routers.git.tls: true
       traefik.http.routers.git.tls.certResolver: letsencrypt
-      traefik.http.routers.git.tls.domains[0].main: git.amy.access.ly
+      traefik.http.routers.git.tls.domains[0].main: git.amy.mov
       traefik.http.routers.git.entrypoints: websecure
-      traefik.http.routers.git.rule: Host(`git.amy.access.ly`)
+      traefik.http.routers.git.rule: Host(`git.amy.mov`)
       traefik.http.services.git.loadbalancer.server.port: 3000
 
       traefik.tcp.routers.gitea-ssh.rule: HostSNI(`*`)

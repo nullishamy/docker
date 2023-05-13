@@ -33,7 +33,7 @@ certificatesResolvers:
   letsencrypt:
     acme:
       # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
-      email: "hello@amyerskine.me"
+      email: "spam@amyerskine.me"
       storage: "acme.json"
 
       httpChallenge:

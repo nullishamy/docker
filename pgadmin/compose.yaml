@@ -14,8 +14,8 @@ services:
       - traefik
     labels:
       traefik.enable: true
-      traefik.http.routers.pgadmin.rule: Host(`pgadmin.amy.access.ly`)
-      traefik.http.routers.pgadmin.tls.domains[0].main: pgadmin.amy.access.ly
+      traefik.http.routers.pgadmin.rule: Host(`pgadmin.amy.mov`)
+      traefik.http.routers.pgadmin.tls.domains[0].main: pgadmin.amy.mov
       traefik.http.routers.pgadmin.tls.certResolver: letsencrypt
       traefik.http.routers.pgadmin.entrypoints: websecure
       traefik.http.services.pgadmin.loadbalancer.server.port: 80

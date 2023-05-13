@@ -12,9 +12,9 @@ services:
       - database-hastebin
     labels:
       traefik.enable: true
-      traefik.http.routers.hastebin.rule: Host(`bin.amy.access.ly`)
+      traefik.http.routers.hastebin.rule: Host(`bin.amy.mov`)
       traefik.http.routers.hastebin.tls.certResolver: letsencrypt
-      traefik.http.routers.hastebin.tls.domains[0].main: bin.amy.access.ly
+      traefik.http.routers.hastebin.tls.domains[0].main: bin.amy.mov
       traefik.http.routers.hastebin.entrypoints: websecure
       traefik.http.services.hastebin.loadbalancer.server.port: 7777
   database:

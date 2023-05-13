@@ -15,10 +15,10 @@ TEMP_PATH = /data/gitea/uploads
 
 [server]
 APP_DATA_PATH    = /data/gitea
-DOMAIN           = git.amycodes.hopto.me
-SSH_DOMAIN       = amy.access.ly
+DOMAIN           = git.amy.mov
+SSH_DOMAIN       = amy.mov
 HTTP_PORT        = 3000
-ROOT_URL         = https://git.amy.access.ly/
+ROOT_URL         = https://git.amy.mov/
 DISABLE_SSH      = false
 SSH_PORT         = 22
 SSH_LISTEN_PORT  = 2202
