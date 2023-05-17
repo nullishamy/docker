@@ -15,8 +15,10 @@ entryPoints:
           scheme: https
   websecure:
     address: :443
-  ssh:
+  ssh-gitea:
     address: :22
+  ssh-snips:
+    address: :23
 
 api:
   insecure: true

@@ -29,7 +29,7 @@ services:
       traefik.http.services.git.loadbalancer.server.port: 3000
 
       traefik.tcp.routers.gitea-ssh.rule: HostSNI(`*`)
-      traefik.tcp.routers.gitea-ssh.entrypoints: ssh
+      traefik.tcp.routers.gitea-ssh.entrypoints: ssh-gitea
       traefik.tcp.routers.gitea-ssh.service: gitea-ssh-svc
       traefik.tcp.services.gitea-ssh-svc.loadbalancer.server.port: 2202
     networks:

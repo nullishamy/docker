@@ -1,0 +1,31 @@
+services:
+  scrutiny:
+    container_name: scrutiny
+    restart: unless-stopped
+    image: ghcr.io/analogj/scrutiny:master-omnibus
+    cap_add:
+      - SYS_RAWIO
+    # ports:
+    #   - "8086:8086" # influxDB admin
+    volumes:
+      - /run/udev:/run/udev:ro
+      - ./scrutiny-p/config:/opt/scrutiny/config
+      - ./scrutiny-p/influxdb:/opt/scrutiny/influxdb
+    devices:
+      - "/dev/sdb"
+      - "/dev/sdc"
+      - "/dev/sdd"
+      - "/dev/sde"
+    labels:
+      traefik.enable: true
+      traefik.http.routers.scrutiny.tls: true
+      traefik.http.routers.scrutiny.tls.certResolver: letsencrypt
+      traefik.http.routers.scrutiny.tls.domains[0].main: monitor.amy.mov
+      traefik.http.routers.scrutiny.entrypoints: websecure
+      traefik.http.routers.scrutiny.rule: Host(`monitor.amy.mov`)
+      traefik.http.services.scrutiny.loadbalancer.server.port: 8080
+    networks:
+      - traefik
+networks:
+  traefik:
+    external: true

@@ -20,6 +20,7 @@ up:
 	set -e 
 	s traefik up -d
 	s web up -d
+	s scrutiny up -d
 	s gitea up -d
 	s hastebin up -d
 	s nextcloud up -d
@@ -37,6 +38,7 @@ down:
 	s traefik down
 	s pgadmin down
 	s web down
+	s scrutiny down
 	s gitea down
 	s hastebin down
 	s nextcloud down
